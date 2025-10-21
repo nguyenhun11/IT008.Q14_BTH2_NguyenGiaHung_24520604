@@ -47,7 +47,7 @@ namespace Bai05
             });
 
             //5. Tìm kiếm nhà phố hoặc chung cư
-            Console.WriteLine("5. Tim kiem nha pho hoac chung cu");
+            Console.WriteLine("\n5. Tim kiem nha pho hoac chung cu");
             cty.Find();
 
         }
@@ -133,7 +133,7 @@ namespace Bai05
 
             public void Find()
             {
-                Console.WriteLine("+ Dia diem: ");
+                Console.Write("+ Dia diem: ");
                 string diadiem = Console.ReadLine();
                 double gia = NhapSoThuc("+ Gia ban: ");
                 double dienTich = NhapSoThuc("+ Dien tich: ");

@@ -58,7 +58,7 @@ namespace Bai02
                 }
 
                 Console.WriteLine("Tiep tuc?\n" +
-                    "[1]: Yes\n[0]: No");
+                    "[1]: Yes\t[0]: No");
                 isContinue = int.Parse(Console.ReadLine());
             }
             while (isContinue > 0);
