@@ -14,9 +14,10 @@ namespace Bai02
             do
             {
                 Console.Write("Nhap duong dan thu muc: " + mainDir);
+                //Đường dẫn tương đối từ vị trí trước đó
                 string dir = Console.ReadLine();
 
-                // Nếu nhập không trống thì cập nhật mainDir
+                //Cập nhật đường dẫn chính
                 if (!string.IsNullOrWhiteSpace(dir))
                 {
                     oldDir = mainDir;
@@ -29,7 +30,8 @@ namespace Bai02
                         mainDir += dir + "/";
                     }
                 }
-
+                
+                //Nếu tìm thấy thư mục
                 if (Directory.Exists(mainDir))
                 {
                     DirectoryInfo di = new DirectoryInfo(mainDir);
@@ -57,6 +59,7 @@ namespace Bai02
                     mainDir = oldDir;
                 }
 
+                //Tiếp tục tìm hoặc thoát chương trình
                 Console.WriteLine("Tiep tuc?\n" +
                     "[1]: Yes\t[0]: No");
                 isContinue = int.Parse(Console.ReadLine());
