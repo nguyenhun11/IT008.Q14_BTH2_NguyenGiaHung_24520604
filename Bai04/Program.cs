@@ -96,7 +96,7 @@ namespace Bai04
                 RutGon();
             }
 
-            private int GCD(int a, int b)
+            private static int GCD(int a, int b)
             {
                 a = Math.Abs(a);
                 b = Math.Abs(b);
