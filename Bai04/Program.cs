@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bai04
 {
@@ -12,29 +7,38 @@ namespace Bai04
     {
         static void Main(string[] args)
         {
+            //1. Nhập hai phân số
             Console.WriteLine("1. Nhap hai phan so: ");
             PhanSo a = new PhanSo();
             PhanSo b = new PhanSo();
             a.Nhap();
             b.Nhap();
 
-            Console.WriteLine("\nTong: " + a + " + " + b + " = " + (a + b));
-            Console.WriteLine("Hieu: " + a + " - " + b + " = " + (a - b));
-            Console.WriteLine("Tich: " + a + " * " + b + " = " + (a * b));
-            Console.WriteLine("Thuong: " + a + " / " + b + " = " + (a / b));
+            Console.WriteLine();
+            Console.WriteLine($"Tong: {a} + {b} = {a + b}");
+            Console.WriteLine($"Hieu: {a} - {b} = {a - b}");
+            Console.WriteLine($"Tich: {a} * {b} = {a * b}");
+            try
+            {
+                Console.WriteLine($"Thuong: {a} / {b} = {a / b}");
+            }
+            catch (DivideByZeroException ex)
+            {
+                Console.WriteLine("Khong chia duoc cho 0 !");
+            }
 
             int n = NhapSoNguyen("\n2. Nhap so luong phan so: ");
             List<PhanSo> list = new List<PhanSo>();
-            for(int i = 0; i < n; i++)
+            for (int i = 0; i < n; i++)
             {
-                Console.WriteLine("Phan so " + (i+1) + ":");
+                Console.WriteLine($"Phan so {i + 1}:");
                 PhanSo newPhanSo = new PhanSo();
                 newPhanSo.Nhap();
                 list.Add(newPhanSo);
             }
 
             list.Sort();
-            Console.WriteLine("\nPhan so lon nhat: " + list[n - 1]);
+            Console.WriteLine($"\nPhan so lon nhat: {list[n - 1]}");
             Console.Write("Day phan so da sap xep: ");
             foreach (PhanSo ps in list)
             {
@@ -46,16 +50,14 @@ namespace Bai04
         {
             public int Tu { get; set; }
             private int mau;
+
             public int Mau
             {
-                get
-                {
-                    return mau;
-                }
-
+                get => mau;
                 set
                 {
-                    if (value == 0) throw new DivideByZeroException("Mau khac 0 !");
+                    if (value == 0)
+                        throw new DivideByZeroException("Mau khac 0 !");
                     mau = value;
                 }
             }
@@ -75,17 +77,9 @@ namespace Bai04
                 RutGon();
             }
 
-            public override string ToString()
-            {
-                if (Mau == 1)
-                    return $"{Tu}";
-                return $"{Tu}/{Mau}";
-            }
-
             public void Nhap()
             {
                 Tu = NhapSoNguyen("Tu: ");
-
                 bool hopLe = false;
                 while (!hopLe)
                 {
@@ -104,6 +98,8 @@ namespace Bai04
 
             private int GCD(int a, int b)
             {
+                a = Math.Abs(a);
+                b = Math.Abs(b);
                 while (b != 0)
                 {
                     int temp = b;
@@ -120,7 +116,8 @@ namespace Bai04
                     Mau = 1;
                     return;
                 }
-                int gcd = GCD(Math.Abs(Tu), Math.Abs(Mau));
+
+                int gcd = GCD(Tu, Mau);
                 Tu /= gcd;
                 Mau /= gcd;
 
@@ -131,11 +128,22 @@ namespace Bai04
                 }
             }
 
+            public override string ToString()
+            {
+                if (Mau == 1)
+                    return $"{Tu}";
+                return $"{Tu}/{Mau}";
+            }
 
-
+            // Toán tử
             public static PhanSo operator +(PhanSo a, PhanSo b)
             {
-                return new PhanSo(b.Tu * a.Mau + b.Mau * a.Tu, b.Mau * a.Mau);
+                return new PhanSo(a.Tu * b.Mau + b.Tu * a.Mau, a.Mau * b.Mau);
+            }
+
+            public static PhanSo operator -(PhanSo a, PhanSo b)
+            {
+                return new PhanSo(a.Tu * b.Mau - b.Tu * a.Mau, a.Mau * b.Mau);
             }
 
             public static PhanSo operator *(PhanSo a, PhanSo b)
@@ -143,38 +151,22 @@ namespace Bai04
                 return new PhanSo(a.Tu * b.Tu, a.Mau * b.Mau);
             }
 
-            public static PhanSo operator -(PhanSo a, PhanSo b)
-            {
-                return a + b * new PhanSo(-1);
-            }
-
             public static PhanSo operator /(PhanSo a, PhanSo b)
             {
+                if (b.Tu == 0)
+                    throw new DivideByZeroException("Khong the chia cho phan so bang 0!");
                 return new PhanSo(a.Tu * b.Mau, a.Mau * b.Tu);
-            }
-
-            public static explicit operator double(PhanSo p)
-            {
-                return (double)p.Tu / (double)p.Mau;
             }
 
             public int CompareTo(object obj)
             {
-                if (obj == null) return 1;
-
-                if (obj is PhanSo otherPhanSo)
+                if (obj is PhanSo p)
                 {
-                    // So sánh dựa trên giá trị double của phân số
-                    double thisValue = (double)this.Tu / this.Mau;
-                    double otherValue = (double)otherPhanSo.Tu / otherPhanSo.Mau;
-
-                    // Sử dụng phương thức CompareTo có sẵn của kiểu double
-                    return thisValue.CompareTo(otherValue);
+                    double x = (double)Tu / Mau;
+                    double y = (double)p.Tu / p.Mau;
+                    return x.CompareTo(y);
                 }
-                else
-                {
-                    throw new ArgumentException("Doi tuong so sanh khong phai la PhanSo!");
-                }
+                throw new ArgumentException("Doi tuong khong phai PhanSo!");
             }
         }
 
@@ -187,12 +179,9 @@ namespace Bai04
                 Console.Write(thongBao);
                 ok = int.TryParse(Console.ReadLine(), out value);
                 if (!ok)
-                {
                     Console.WriteLine("Gia tri khong hop le, vui long nhap lai!");
-                }
             } while (!ok);
             return value;
         }
-
     }
 }

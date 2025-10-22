@@ -134,25 +134,25 @@ namespace Bai05
             public void Find()
             {
                 Console.Write("+ Dia diem: ");
-                string diadiem = Console.ReadLine();
+                string diadiem = Console.ReadLine()?.Trim() ?? string.Empty;
                 double gia = NhapSoThuc("+ Gia ban: ");
                 double dienTich = NhapSoThuc("+ Dien tich: ");
 
                 List<KhuDat> result = new List<KhuDat>();
-                foreach (KhuDat khuDat in list)
+                foreach (var khuDat in list)
                 {
                     if (khuDat.loai == KhuDat.LOAI.KhuDat) continue;
-                    if (string.IsNullOrEmpty(diadiem) || string.IsNullOrEmpty(khuDat.DiaDiem)) continue;
+                    if (string.IsNullOrWhiteSpace(diadiem) || string.IsNullOrWhiteSpace(khuDat.DiaDiem)) continue;
                     if (khuDat.DiaDiem.IndexOf(diadiem, StringComparison.OrdinalIgnoreCase) < 0) continue;
-                    if (gia > khuDat.GiaBan) continue;
-                    if (dienTich <  khuDat.DienTich) continue;
+                    if (khuDat.GiaBan > gia) continue;
+                    if (khuDat.DienTich < dienTich) continue;
                     result.Add(khuDat);
                 }
 
                 if (result.Count > 0)
                 {
                     Console.WriteLine("KET QUA TIM KIEM: ");
-                    foreach (KhuDat khu in list)
+                    foreach (KhuDat khu in result)
                     {
                         Console.WriteLine(khu);
                     }

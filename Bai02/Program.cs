@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 
-
 namespace Bai02
 {
     internal class Program
